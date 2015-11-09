@@ -1,6 +1,9 @@
+http://wiki.pythonchallenge.com
+This is which need read first. Especially "How to get access to the solutions?"
+
 0: confess. "replace 0(end of url) by answer"
 
-1: only lowercase alphablet in riddle String.
+1: only lowercase alphablet in riddle String. Needn't more.
 "now Apply on the url" means apply end of url, ooooooooooooh means 'map'
 
-2
+2: 
