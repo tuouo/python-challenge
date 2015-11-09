@@ -40,5 +40,4 @@ mapAlph = str.maketrans(alphablet, tranAlph)
 result = riddle.translate(mapAlph)
 print(result)
 
-from tools import writeData
-writeData(result)
+print('map'.translate(mapAlph))
