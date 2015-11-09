@@ -1,0 +1,6 @@
+0: confess. "replace 0(end of url) by answer"
+
+1: only lowercase alphablet in riddle String.
+"now Apply on the url" means apply end of url, ooooooooooooh means 'map'
+
+2
