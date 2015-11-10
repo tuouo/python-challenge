@@ -6,4 +6,20 @@ This is which need read first. Especially "How to get access to the solutions?"
 1: only lowercase alphablet in riddle String. Needn't more.
 "now Apply on the url" means apply end of url, ooooooooooooh means 'map'
 
-2: 
+2: sava page source(html), and you will see.
+find letter in str which only appear ‘rare'
+oh, you must forget one things,in the page
+yes, 'source' have show it, order
+
+3: re is you friend.
+don't forget ^
+
+4: http://www.pythonchallenge.com/pc/def/linkedlist.html
+what's the hell
+you need go to linkedlist.php
+
+It need 86, than go "Yes, ..."
+it means number in url need change as it says.
+and than, another 165. you get it.
+
+5: 
