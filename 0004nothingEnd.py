@@ -21,7 +21,7 @@ for i in range(400):
         data = ur.urlopen(url + number[0]).read()
         print(i, data)
         #number = re.findall('[0-9]+$', data.decode('utf-8'))
-        number = re.findall(r"(?<=and the next nothing is )\d+", data.decode('utf-8'))
+        number = re.findall(r"(?<=and the next nothing is )\d+", data.decode('utf-8'))	# (?<=...)
     except:
         print('end\t', data)
         break;
