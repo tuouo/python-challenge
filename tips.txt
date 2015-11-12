@@ -35,4 +35,8 @@ put output data to a good place.
 7: look at what you hava. Analyse it.
 change number if they below 255 or anything same.
  
+8: BZh9 --> bz2
+
+9: PIL Image ImageDraw Draw line 
+group by two, treat as dots coordinate. connect one bye one
  
