@@ -48,3 +48,20 @@ group by two, treat as dots coordinate. connect one bye one
     odd even about the picture.
 	getpixel, load() may help
  
+12: evil1.jpg not evil.jpg
+  evil2.gfx 
+  divide into five, jpg
+  ?*? Bert is evil! go back! only IE can see.
+  ?*? http://www.pythonchallenge.com/pc/return/bert.html
+  delete means delete
+  
+13: XML, need to be opened in right way --> xmlrpc
+  system.listMethods() will tell you what method supported.
+  print(server.phone("evil")) "He is not the evil"
+  Where is the evil. Level 12 does he appear.
+  latters is ok, not all things.
+  SMALL letters.
+  
+14: 
+  
+    
