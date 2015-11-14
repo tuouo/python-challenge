@@ -11,4 +11,6 @@ To be legendary
     reg = re.compile(r'((?P<w>\d)(?P=w)*)')
     make somebady hnow why
 
+15: getpixel((x, y)) --> 195 means one of pink?
+
 '''
