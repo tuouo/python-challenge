@@ -65,7 +65,12 @@ group by two, treat as dots coordinate. connect one bye one
 14: <!-- remember: 100*100 = (100+99+99+98) + (...  -->
   shows you how to 'walk around', such as 'italy.jpg'
   let's walk around by the map "wire.png"
-  Than you will find who is walk around.  
+  Than you will find who is walk around.
+
+15: whom? tomorrow needs flowers.
+    git date info from picture.
+
+16: 	
   
   
     
