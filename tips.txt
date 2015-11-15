@@ -70,7 +70,25 @@ group by two, treat as dots coordinate. connect one bye one
 15: whom? tomorrow needs flowers.
     git date info from picture.
 
-16: 	
+16: let me get this straight
+  get what? the color.
+
+17：to see cookies
+  Settings-> Show advanced settings...
+  Privacy -> Content settings... -> Cookies-> All cookies and site data...  
+  # *******************
+  Name:	info
+  Content:	you+should+have+followed+busynothing...
+  Domain:	.pythonchallenge.com
+  Path:	/
+  Send for:	Any kind of connection
+  # ********************
+  
+  with picture have Level 4 picture, go busynothing
+  after 117 next. you will see "that's it."
+  
+  turn cookies.
+  
   
   
     
