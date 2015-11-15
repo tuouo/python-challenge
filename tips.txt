@@ -89,6 +89,13 @@ group by two, treat as dots coordinate. connect one bye one
   
   turn cookies.
   
+  !!! Error !!!
+  http://www.pythonchallenge.com/pc/def/linkedlist.php?busynothing=19242
+  Name:	info
+  Content:	+
+  Domain:	.pythonchallenge.com
+  
+  According to the good bz2.decompress data. cookies in this page should be %20 not +
   
   
     
