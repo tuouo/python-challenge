@@ -97,5 +97,11 @@ group by two, treat as dots coordinate. connect one bye one
   
   According to the good bz2.decompress data. cookies in this page should be %20 not +
   
+  If you have th right data, you will have right message. Do as the message said.
+  Then you turn http://www.pythonchallenge.com/pc/return/violin.html
+  /pc/stuff/violin.php not pc/return/stuff/violin.php.
+  
+  http://www.pythonchallenge.com/pc/stuff/violin.php you need "inform him"
+  
   
     
