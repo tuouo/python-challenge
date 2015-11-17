@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 '''
 http://www.pythonchallenge.com/pc/def/oxygen.html
 '''	
