@@ -103,5 +103,10 @@ group by two, treat as dots coordinate. connect one bye one
   
   http://www.pythonchallenge.com/pc/stuff/violin.php you need "inform him"
   
+18: TODO
+
+19: In the email "I have a real work to do and I must know what's inside!"
+	"Maybe my computer is out of order." means do as the map imply.
+	
   
     
