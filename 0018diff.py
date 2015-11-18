@@ -6,7 +6,7 @@ http://www.pythonchallenge.com/pc/return/balloons.html
 
 http://www.pythonchallenge.com/pc/return/brightness.html
 '''
-import urllib.request as ur, re, gzip, io, difflib
+import urllib.request as ur, re, gzip, io, difflib, base64
 from PIL import Image
 url = 'http://www.pythonchallenge.com/pc/return/deltas.gz'
 
@@ -20,7 +20,7 @@ with gzip.GzipFile(fileobj = io.BytesIO(data)) as gz:
         left.append(line[:53].decode('utf-8'))
         right.append(line[56:].decode('utf-8'))
 result = list(difflib.ndiff(left,right))
-
+print("List ok.")
 png = ['', '', '']
 for row in result:
     byte = [chr(int(byte, 16)) for byte in row[2:].split()]
@@ -30,8 +30,10 @@ for row in result:
         png[1] += ''.join(byte)
     elif row[0] == ' ':
         png[2] += ''.join(byte)
+print("Prepare to Image.")
 for i in range(3):
-    Image.open('0018_%d.png' % i, 'wb').write(png[i])
+    mes = base64.b64decode(png[i])
+    open('0018_%d.png' % i, 'wb').write(mes)
 
 #import urllib.request as ur, re, gzip, io, difflib
 #from PIL import Image
