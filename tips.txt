@@ -138,4 +138,10 @@ and it is hiding at 1152983631.
   gif -> ImageSequence, not None -> Image.getbbox()
   the pretend to paly handle which in the picture, then you will know how to do with data
   
-    
+23: what is this module?
+    <!-- 	it can't find it. this is an undocumented module. -->
+  a moudle,  undocumented
+    <!--
+    'va gur snpr bs jung?'
+    -->
+  see Level 1, this point the next level
