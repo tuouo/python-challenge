@@ -132,8 +132,10 @@ and it is hiding at 1152983631.
 	and don't forget this is not from web page, Level 20 may imply you.(esrever kool)
 	
 	logs: it means what have you do, mark it.
-
-
 	
+22: <!-- or maybe white.gif would be more bright-->
+  However, the gif look all black.
+  gif -> ImageSequence, not None -> Image.getbbox()
+  the pretend to paly handle which in the picture, then you will know how to do with data
   
     
