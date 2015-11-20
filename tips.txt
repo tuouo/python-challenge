@@ -123,6 +123,15 @@ esrever ni emankcin wen ruoy si drowssap eht
 and it is hiding at 1152983631.
     find nichname in this level, and it be in this level.(nichname is a name, which is used for others call you)
 
+21: * We used to play this game when we were kids
+    * When I had no idea what to do, I looked backwards.
+  I don't know what does it means. someone says:
+  "这是个小时候的游戏，击鼓传花，国外的玩法不一样，需要一层层地拆传递的那个东西".
+  so it wants you decompress.
+    zlib: startswith(b"x\x9c")	bz2: startswith(b"BZ")
+	and don't forget this is not from web page, Level 20 may imply you.(esrever kool)
+	
+	logs: it means what have you do, mark it.
 
 
 	
