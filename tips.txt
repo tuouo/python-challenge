@@ -145,3 +145,8 @@ and it is hiding at 1152983631.
     'va gur snpr bs jung?'
     -->
   see Level 1, this point the next level
+  
+24: The wall is write.
+    use PIL, Image from top to bottom.
+	save the way you passed.
+    PK --> zip, you shoud know
