@@ -150,3 +150,13 @@ and it is hiding at 1152983631.
     use PIL, Image from top to bottom.
 	save the way you passed.
     PK --> zip, you shoud know
+	
+25: imagine how they sound  --> talk about sound
+    lake1.jpg  --> lake%d.jpg   (not)  <!-- can you see the waves? -->  --> waves?
+	http://www.pythonchallenge.com/pc/hex/lake1.wav
+	
+	than ,we will find lake25.wav (same number as in the jigsaw picture) so, join wavs.
+	<!-- can you see the waves? --> we need to see. change wav somehow so that can see.
+	than join it.
+	
+	
