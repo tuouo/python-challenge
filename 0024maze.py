@@ -48,10 +48,9 @@ else:
 im = Image.open("0024maze.png")
 new = Image.new('RGBA', im.size, 'black')
 data = [(im.getpixel(k)[0], new.putpixel(k, wall)) for path in all_path for k in path]
-#new.show()    #new.save('0024out.png')
+new.show()    #new.save('0024out.png')
 
+import struct
 with open("0024mazeout.zip", "wb") as out:
-	#info = ''.join(map(lambda x: str(chr(x[0]).encode('utf-8')), data[1::2]))
-	#out.write(info)
     for i in data[1::2]:
-        out.write(chr(i[0]).encode('utf-8'))
+        out.write(struct.pack("=B", i[0]))
