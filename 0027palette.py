@@ -20,7 +20,7 @@ trans = bytearray.maketrans(Karr, palette)
 datatran = data.translate(trans)
 # print(len(datatran), datatran[:100])
 # print(len(data), data[:100])
-deltas = filter(lambda p : p[0] != p[1], zip(data[1:], datatran[:-1]))
+deltas = filter(lambda p : p[0] != p[1], zip(data[1:], datatran[:-1]))	# zip
 
 old, new = b'', b''
 for i in deltas:
