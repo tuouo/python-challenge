@@ -3,7 +3,7 @@
 '''
 http://www.pythonchallenge.com/pc/hex/decent.html
 
-keyword different between Python 2.X and Python 3.X
+keyword: different between Python 2.X and Python 3.X
 '''
 from PIL import Image
 import struct, bz2, keyword
