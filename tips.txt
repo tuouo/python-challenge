@@ -178,4 +178,13 @@ it has nothing to do with this level.-->
 	
 	I don't know how speed with "Hurry up, I'm missing the boat" get the answer
 	
-27: 
+27: <!-- did you say gif? -->
+  http://www.pythonchallenge.com/pc/hex/zigzag.gif
+  image mode =P, change picture, vary close to original data
+  between the tables
+  look the different data, one: "BZh91", then will find a list of many words
+  
+  I dont't know where the position of different imply a picture
+  keyword: different between Python 2.X and Python 3.X
+  
+  
