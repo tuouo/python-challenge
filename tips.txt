@@ -187,4 +187,9 @@ it has nothing to do with this level.-->
   I dont't know where the position of different imply a picture
   keyword: different between Python 2.X and Python 3.X
   
-  
+28: nothing only have picture
+    #ring ring ring -> split() rgb:g 
+	look at data carefully.
+	you will have some data. transferit.
+	
+	w*().split()[0] ?   oh, we talk about python.
