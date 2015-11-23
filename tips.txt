@@ -193,3 +193,7 @@ it has nothing to do with this level.-->
 	you will have some data. transferit.
 	
 	w*().split()[0] ?   oh, we talk about python.
+	
+29: look at web page, you won't see something just under you nose.
+    yes, space.
+    Isn't it clear? I am yankeedoodle!
