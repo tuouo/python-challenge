@@ -4,7 +4,6 @@
 http://www.pythonchallenge.com/pc/ring/bell.html
 '''
 from PIL import Image
-import struct
 im = Image.open("0028bell.png")
 #print(im)
 r, g, b = im.split()
