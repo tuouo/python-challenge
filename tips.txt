@@ -197,3 +197,10 @@ it has nothing to do with this level.-->
 29: look at web page, you won't see something just under you nose.
     yes, space.
     Isn't it clear? I am yankeedoodle!
+	
+30: <!-- while you look at the csv file -->
+    find the csv
+	csv: all number between 0~1, so which is unit "one"
+	transfer number to pixel, postion ot picture or char
+	the counts of numbers means image resolution(combine its options)
+	
