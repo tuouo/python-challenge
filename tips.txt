@@ -204,3 +204,10 @@ it has nothing to do with this level.-->
 	transfer number to pixel, postion ot picture or char
 	the counts of numbers means image resolution(combine its options)
 	
+31：First: just where the picture show then authentication
+
+    not know mandelbrot, learn what about it then back.
+	make a img with given parameter. 
+	check the different, record it.
+	while, it means True or false, and make it a picture.
+	Arecibo message
