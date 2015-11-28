@@ -43,7 +43,9 @@ def scanLine(lineLen, tipNums, line):
     mostLeft  = getMostLeftLine(lineLen, tipNums, line)  # all black to left as possible
     mostRight = getMostRightLine(lineLen, tipNums, line) # all black to right as possible
     lineOK    = checkLeftRight(mostLeft, mostRight)      # if blacks are same, OK
+    
     newLine   = mixLeftRight(mostLeft, mostRight)        # get cell suit both left & right
+    # check cross, if len less than all tipnumber
     return newLine, lineOK
 
 
@@ -52,10 +54,9 @@ def getMostLeftLine(lineLen, tipNums, line):
     while num < len(tipNums):
         blockLen = tipNums[num]
         nextpos = findNextBlockStart(lineLen, blockLen, line, pos)
-        newLine.append(line[pos, nextpos])
-        newLine.append([blcak] * blockLen)
-        newLine.append(line[nextpos + blockLen + 1])
-        newLine, num, pos = checkBefore(tipNums, num, line, newLine, nextpos)
+        newLine, num = checkBefore(tipNums, num, line, newLine, nextpos)
+        # if num change
+        newLine.append(line[pos, nextpos] + [blcak] * blockLen + line[nextpos + blockLen + 1])
 
 
 
@@ -63,25 +64,34 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
     '''
     check pre suit block need move right or not
     '''
-    if num == 0:               # if nextpos still have black, means wrong table
-        return newLine, num + 1, nextpos
-    checkpos, num = nextpos - 1, num - 1
-    preEnd = 0
-    while checkpos >= 0:
-        while line[checkpos] != black and checkpos >= 0: # find pre block
+    if num == 0:               # if pre still have black, means wrong table
+        return newLine, num
+    checkpos, preBlockEnd = nextpos - 1, nextpos - 1
+    while newLine[preBlockEnd] != black : # find pre block in newLine, must be there
+        preBlockEnd -= 1
+    while checkpos > preBlockEnd:
+        while line[checkpos] != black:    # find pre block in line
             checkpos -= 1
-        if newLine[checkpos] == black or checkpos < 0:
-            num += 2
-            break              # means every block covered, so OK
-        else:                  # means before this block, must have no-black in line
-            checkSta = checkpos - 1
-            while line[checkSta] == black:
-                checkSta -= 1  # see pre, checkSta won't be negative
-            blockLen = checkpos - checkSta
+        if checkpos == preBlockEnd:       # means every block covered, so OK            
+            return newLine, num            
+        else:                  
+            num -= 1
+            preBlockLen, skippos = tipNums[num], checkpos - preBlockLen + 1
+            for pos in range(checkpos - preBlockLen, checkpos):
+                if line[pos] != black:
+                    skippos = pos
+                    break
+                elif line[pos + preBlockLen + 1] == cross: # and will not suit pre cell cross
+                    for i in range(preBlockEnd - preBlockLen + 1, preBlockLen):                            
+                        newLine[i] = line[i]
+                    return checkBefore(tipNums, num - 1, line, newLine, pos + preBlockLen + 1)
+            for i in range(preBlockEnd - preBlockLen + 1, skippos):                            
+                newLine[i] = line[i]                       # remove pre block for ship backword
+            return checkBefore(tipNums, num, line, newLine, skippos)
 
 
 
-    return newLine, num, nextpos
+    
 
 
 
@@ -100,19 +110,19 @@ def findNextBlockStart(lineLen, blockLen, line, start):
                 break
         if pos == newpos:
             try: 
-                while line[pos + blockLen] == blcak or line[pos - 1] == blcak:          
+                while line[pos + blockLen] == black or line[pos - 1] == black:          
                     pos += 1                      # black block's next shouldn't be black  
-                    while line[pos + blockLen] == blcak :
+                    while line[pos + blockLen] == black :
                         pos += 1
-                    if line[pos - 1] == blcak:    # black block's pre shouldn't be black 
+                    if line[pos - 1] == black:    # black block's pre shouldn't be black 
                         if line[pos + blockLen] == cross:
                             pos += (blockLen + 1) # suit block len not suit black
                             break
                         else:
-                            pos += 1              # continue check next is blcak
+                            pos += 1              # continue check next is black
                 find = True
             except Exception, e:                  # black block can reach end
-                if (pos + blockLen - 1) == lineLen and line[pos - 1] != blcak:
+                if (pos + blockLen - 1) == lineLen and line[pos - 1] != black:
                     find = True
                 else:
                     raise e
