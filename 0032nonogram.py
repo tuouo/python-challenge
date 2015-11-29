@@ -50,13 +50,17 @@ def scanLine(lineLen, tipNums, line):
 
 
 def getMostLeftLine(lineLen, tipNums, line):
-    pos, num, newLine = 0, 0, []
+    pos, num, newLine = 0, 0, [virgin] * lineLen
     while num < len(tipNums):
         blockLen = tipNums[num]
         nextpos = findNextBlockStart(lineLen, blockLen, line, pos)
-        newLine, num = checkBefore(tipNums, num, line, newLine, nextpos)
+        newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)
         # if num change
-        newLine.append(line[pos, nextpos] + [blcak] * blockLen + line[nextpos + blockLen + 1])
+        if numNew == num:
+            for i in range(nextpos, nextpos + blockLen + 1):
+                newLine[i] = blcak
+        else:
+
 
 
 
@@ -65,7 +69,7 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
     check pre suit block need move right or not
     '''
     if num == 0:               # if pre still have black, means wrong table
-        return newLine, num
+        return newLine, num, nextpos
     checkpos, preBlockEnd = nextpos - 1, nextpos - 1
     while newLine[preBlockEnd] != black : # find pre block in newLine, must be there
         preBlockEnd -= 1
@@ -73,7 +77,7 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
         while line[checkpos] != black:    # find pre block in line
             checkpos -= 1
         if checkpos == preBlockEnd:       # means every block covered, so OK            
-            return newLine, num            
+            return newLine, num, nextpos            
         else:                  
             num -= 1
             preBlockLen, skippos = tipNums[num], checkpos - preBlockLen + 1
@@ -82,11 +86,11 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
                     skippos = pos
                     break
                 elif line[pos + preBlockLen + 1] == cross: # and will not suit pre cell cross
-                    for i in range(preBlockEnd - preBlockLen + 1, preBlockLen):                            
-                        newLine[i] = line[i]
+                    for i in range(preBlockEnd - preBlockLen + 1, preBlockEnd + 1):                            
+                        newLine[i] = [virgin]              # remove pre block in new line
                     return checkBefore(tipNums, num - 1, line, newLine, pos + preBlockLen + 1)
             for i in range(preBlockEnd - preBlockLen + 1, skippos):                            
-                newLine[i] = line[i]                       # remove pre block for ship backword
+                newLine[i] = [virgin]                      # remove (pre block -- skippos)
             return checkBefore(tipNums, num, line, newLine, skippos)
 
 
