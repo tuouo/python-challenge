@@ -42,26 +42,37 @@ def nonogram(numbers):
 def scanLine(lineLen, tipNums, line):
     mostLeft  = getMostLeftLine(lineLen, tipNums, line)  # all black to left as possible
     mostRight = getMostRightLine(lineLen, tipNums, line) # all black to right as possible
-    lineOK    = checkLeftRight(mostLeft, mostRight)      # if blacks are same, OK
-    
-    newLine   = mixLeftRight(mostLeft, mostRight)        # get cell suit both left & right
+    lineOK    = checkLeftRight(lineLen,mostLeft, mostRight)      # if blacks are same, OK    
+    newLine   = mixLeftRight(lineLen, mostLeft, mostRight)        # get cell suit both left & right
     # check cross, if len less than all tipnumber
     return newLine, lineOK
+
+def mixLeftRight(lineLen, mostLeft, mostRight):
+    offLeft, offRight = 0, 0
+    
+    
+
+
+def checkLeftRight(lineLen, mostLeft, mostRight):
+    for i in range(lineLen):
+        if mostLeft[i] == black and mostRight[i] != black:
+            return False
+    return True
+
+
+def getMostRightLine(lineLen, tipNums, line):
+    return getMostLeftLine(lineLen, tipNums, line[::-1])[::-1]
 
 
 def getMostLeftLine(lineLen, tipNums, line):
     pos, num, newLine = 0, 0, [virgin] * lineLen
     while num < len(tipNums):
-        blockLen = tipNums[num]
-        nextpos = findNextBlockStart(lineLen, blockLen, line, pos)
+        nextpos = findNextBlockStart(lineLen, tipNums[num], line, pos)
         newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)
-        # if num change
-        if numNew == num:
-            for i in range(nextpos, nextpos + blockLen + 1):
-                newLine[i] = blcak
-        else:
-
-
+        blockLen = tipNums[numNew]
+        for i in range(nextpos, nextpos + blockLen):
+            newLine[i] = blcak
+    return newLine
 
 
 def checkBefore(tipNums, num, line, newLine, nextpos):
@@ -92,14 +103,6 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
             for i in range(preBlockEnd - preBlockLen + 1, skippos):                            
                 newLine[i] = [virgin]                      # remove (pre block -- skippos)
             return checkBefore(tipNums, num, line, newLine, skippos)
-
-
-
-    
-
-
-
-
 
 
 def findNextBlockStart(lineLen, blockLen, line, start):
