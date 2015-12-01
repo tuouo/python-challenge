@@ -1,8 +1,45 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from functools import reduce
+'''
+The implement of game 'nonogram'.
+input data:
+# Dimensions (len:2, Horizontal len & Vertical len)
+# Horizontal (tipnumbers per line, Horizontal's in total)
+# Vertical (tipnumbers per line, Horizontal's in total)
+# #     example:
+# # Dimensions
+# 9 9
+# # Horizontal
+# 2 1 2
+# 1 3 1
+# 5
+# 7
+# 9
+# 3
+# 2 3 2
+# 2 3 2
+# 2 3 2
+# # Vertical
+# 2 1 3
+# 1 2 3
+# 3
+# 8
+# 9
+# 8
+# 3
+# 1 2 3
+# 2 1 3
+
+virgin, cross, black = 0, 1, 2    # means not sure, not, is black for each cell
+'''
+
+import logging; logging.basicConfig(level = logging.INFO)
+virgin, cross, black = 0, 1, 2    # means not sure, not, is black
 
 def nonogram(numbers):
+    logging.info("Let's beginnig nonogram")
+    global virgin, cross, black
     HorLen, VerLen  = numbers[0][0], numbers[0][1]
     Horizontal = numbers[1 : 1 + HorLen]
     Vertical = numbers[1 + HorLen :]    
@@ -10,7 +47,6 @@ def nonogram(numbers):
     VerOK = [False] * VerLen    # mark if vertical line mark ok or not 
     allOK = reduce(lambda a, b: a and b, HorOK + VerOK)
 
-    virgin, cross, black = 0, 1, 2    # means not sure, not, is black
     count, limit = 0, HorLen * VerLen # incase noend loop
     table = [None] * HorLen           # Init
     for i in range(HorLen):
@@ -20,13 +56,15 @@ def nonogram(numbers):
         while not allOK and count < limit:
             for i in range(HorLen):
                 if not HorOK[i]:
+                    logging.info("scanLine Horizontal line %s" % i)
                     table[i], HorOK[i] = scanLine(VerLen, Horizontal[i], table[i])
             for i in range(VerLen):
                 if not VerOK[i]:
                     line = []     # transfer Vertical to Horizontal for multiplex method scanLine
                     for n in range(HorLen):
                         line.append(table[n][i])
-                    newLine, VerOK[i] = scanLine(HorLen, Horizontal[i], line)
+                    logging.info("scanLine Vertical line %s" % i)
+                    newLine, VerOK[i] = scanLine(HorLen, Vertical[i], line)
                     for n in range(HorLen):
                         table[n][i] = newLine[n]
             allOK = reduce(lambda a, b: a and b, HorOK + VerOK)
@@ -40,11 +78,15 @@ def nonogram(numbers):
 
 
 def scanLine(lineLen, tipNums, line):
+    logging.info("----MostLeft")
     offLeft = getMostLeftLine(lineLen, tipNums, line)       # all black to left as possible
+    logging.info("----MostRight")
     offRigh = getMostRightLine(lineLen, tipNums, line)      # all black to right as possible  
     lineOK  = offLeft == offRigh    
+    logging.info("----mix")
     newLine = mixLeftRight(line, tipNums, offLeft, offRigh) # get cell suit both left & right
-    if not lineOK:
+    if not lineOK: 
+        logging.info("----checkCross")
         newLine = checkCross(newLine, tipNums, offLeft, offRigh) 
     return newLine, lineOK
 
@@ -52,7 +94,8 @@ def scanLine(lineLen, tipNums, line):
 def checkCross(newLine, tipNums, mostLeft, mostRight):
     '''
     check cross: if virgin block'len less than black block which may appear, must be cross
-    '''
+    '''    
+    global virgin, cross, black
     off, blockLen = mostLeft[0][1] + 1, 1 
     while off < mostRight[-1][1]:
         if newLine[off] == virgin:
@@ -71,7 +114,8 @@ def checkCross(newLine, tipNums, mostLeft, mostRight):
     return newLine
 
 
-def mixLeftRight(line, mostLeft, mostRight):
+def mixLeftRight(line, mostLeft, mostRight):    
+    global virgin, cross, black
     tipNum, lineLen = len(mostLeft), len(lineLen)
     for n in range(mostLeft[0][0]):
         line[n] = cross
@@ -92,14 +136,18 @@ def getMostRightLine(lineLen, tipNums, line):
 
 
 def getMostLeftLine(lineLen, tipNums, line):
+    global virgin, cross, black
     pos, num, offLeft, newLine = 0, 0, [(0, 0)] * len(tipNums), [virgin] * lineLen
     while num < len(tipNums):
         nextpos = findNextBlockStart(lineLen, tipNums[num], line, pos)
+        logging.info("--nextpos: %s, for num: %s" % (nextpos, num))
         newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)
         blockLen = tipNums[numNew]
+        logging.info("--newNum: %s, newPos: %s" % (numNew, nextpos))
         for i in range(nextpos, nextpos + blockLen):  
-            newLine[i] = blcak
+            newLine[i] = black
         offLeft[num] = (nextpos, nextpos + blockLen - 1) # add each block's start&end
+        break  # TODO
     return offLeft
 
 
@@ -107,6 +155,7 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
     '''
     check pre suit block need move right or not
     '''
+    global virgin, cross, black
     if num == 0:               # if pre still have black, means wrong table
         return newLine, num, nextpos
     checkpos, preBlockEnd = nextpos - 1, nextpos - 1
@@ -134,6 +183,7 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
 
 
 def findNextBlockStart(lineLen, blockLen, line, start):
+    global virgin, cross, black
     pos, find = start, False
     while not find:        
         newpos = pos
@@ -190,5 +240,5 @@ if __name__ == '__main__':
     for i in numberStr:
         if reg.match(i):
             numbers.append(list(map(int, reg.findall(i))))
-    
+    #print(numbers)
     nonogram(numbers)
