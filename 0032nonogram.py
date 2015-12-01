@@ -31,33 +31,60 @@ def nonogram(numbers):
                         table[n][i] = newLine[n]
             allOK = reduce(lambda a, b: a and b, HorOK + VerOK)
             count += 1
-    except Exception, e:
+    except Exception as e:
         printNo2g(table)
         raise e
 
     printNo2g(table)
-    return 
+    return table
 
 
 def scanLine(lineLen, tipNums, line):
-    mostLeft  = getMostLeftLine(lineLen, tipNums, line)  # all black to left as possible
-    mostRight = getMostRightLine(lineLen, tipNums, line) # all black to right as possible
-    lineOK    = checkLeftRight(lineLen,mostLeft, mostRight)      # if blacks are same, OK    
-    newLine   = mixLeftRight(lineLen, mostLeft, mostRight)        # get cell suit both left & right
-    # check cross, if len less than all tipnumber
+    offLeft = getMostLeftLine(lineLen, tipNums, line)       # all black to left as possible
+    offRigh = getMostRightLine(lineLen, tipNums, line)      # all black to right as possible  
+    lineOK  = offLeft == offRigh    
+    newLine = mixLeftRight(line, tipNums, offLeft, offRigh) # get cell suit both left & right
+    if not lineOK:
+        newLine = checkCross(newLine, tipNums, offLeft, offRigh) 
     return newLine, lineOK
 
-def mixLeftRight(lineLen, mostLeft, mostRight):
-    offLeft, offRight = 0, 0
-    
-    
+
+def checkCross(newLine, tipNums, mostLeft, mostRight):
+    '''
+    check cross: if virgin block'len less than black block which may appear, must be cross
+    '''
+    off, blockLen = mostLeft[0][1] + 1, 1 
+    while off < mostRight[-1][1]:
+        if newLine[off] == virgin:
+            while newLine[off + blockLen] == virgin:
+                blockLen += 1
+            if newLine[off - 1] != cross or newLine[off + blockLen] != cross:
+                off += blockLen
+            else:
+                for i in range(len(tipNums)):
+                    if off > mostLeft[i][1]:
+                        if off < mostRight[i][0] and blockLen < tipNums[i]:
+                            for n in range(blockLen):
+                                newLine[off + n] = cross
+                    else:
+                        break
+    return newLine
 
 
-def checkLeftRight(lineLen, mostLeft, mostRight):
-    for i in range(lineLen):
-        if mostLeft[i] == black and mostRight[i] != black:
-            return False
-    return True
+def mixLeftRight(line, mostLeft, mostRight):
+    tipNum, lineLen = len(mostLeft), len(lineLen)
+    for n in range(mostLeft[0][0]):
+        line[n] = cross
+    for i in range(tipNum - 1):
+        for n in range(mostRight[i][0], mostLeft[i][1] + 1):
+            line[i] = black
+        for n in range(mostRight[i][1] + 1, mostLeft[i + 1][0]):
+            line[i] = cross    
+    for n in range(mostRight[-1][0], mostLeft[-1][1] + 1):
+        line[n] = black
+    for n in range(mostRight[-1][1] + 1, lineLen):
+        line[i] = cross    
+    return line    
 
 
 def getMostRightLine(lineLen, tipNums, line):
@@ -65,14 +92,15 @@ def getMostRightLine(lineLen, tipNums, line):
 
 
 def getMostLeftLine(lineLen, tipNums, line):
-    pos, num, newLine = 0, 0, [virgin] * lineLen
+    pos, num, offLeft, newLine = 0, 0, [(0, 0)] * len(tipNums), [virgin] * lineLen
     while num < len(tipNums):
         nextpos = findNextBlockStart(lineLen, tipNums[num], line, pos)
         newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)
         blockLen = tipNums[numNew]
-        for i in range(nextpos, nextpos + blockLen):
+        for i in range(nextpos, nextpos + blockLen):  
             newLine[i] = blcak
-    return newLine
+        offLeft[num] = (nextpos, nextpos + blockLen - 1) # add each block's start&end
+    return offLeft
 
 
 def checkBefore(tipNums, num, line, newLine, nextpos):
@@ -128,7 +156,7 @@ def findNextBlockStart(lineLen, blockLen, line, start):
                         else:
                             pos += 1              # continue check next is black
                 find = True
-            except Exception, e:                  # black block can reach end
+            except Exception as e:                  # black block can reach end
                 if (pos + blockLen - 1) == lineLen and line[pos - 1] != black:
                     find = True
                 else:
@@ -141,8 +169,26 @@ def printNo2g(table):
         for cell in line:
             if cell == 2:
                 print("*", end = '')
-            elif cell = 1:
+            elif cell == 1:
                 print(" ", end = '')
             else:
                 print("?", end = '')
         print()
+
+
+
+
+if __name__ == '__main__':
+
+    import re
+    with open("output.rtf", 'r') as r:
+        data = r.read()
+    
+    numberStr = data.split('\n')
+    numbers = []
+    reg = re.compile(r'(\d+)')
+    for i in numberStr:
+        if reg.match(i):
+            numbers.append(list(map(int, reg.findall(i))))
+    
+    nonogram(numbers)
