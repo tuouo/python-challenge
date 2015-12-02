@@ -79,12 +79,13 @@ def nonogram(numbers):
 
 def scanLine(lineLen, tipNums, line):
     logging.info("----MostLeft")
-    offLeft = getMostLeftLine(lineLen, tipNums, line)       # all black to left as possible
+    offLeft = getMostLeftLine(lineLen, tipNums, line)   # all black to left as possible
     logging.info("----MostRight")
-    offRigh = getMostRightLine(lineLen, tipNums, line)      # all black to right as possible  
+    offRigh = getMostRightLine(lineLen, tipNums, line)  # all black to right as possible  
     lineOK  = offLeft == offRigh    
-    logging.info("----mix")
-    newLine = mixLeftRight(line, tipNums, offLeft, offRigh) # get cell suit both left & right
+    logging.info("\t%s\n%s\n%s" % (lineOK, offLeft, offRigh))
+    newLine = mixLeftRight(line, offLeft, offRigh)      # get cell suit both left & right
+    logging.info("----mix\n%s" % newLine)
     if not lineOK: 
         logging.info("----checkCross")
         newLine = checkCross(newLine, tipNums, offLeft, offRigh) 
@@ -116,7 +117,7 @@ def checkCross(newLine, tipNums, mostLeft, mostRight):
 
 def mixLeftRight(line, mostLeft, mostRight):    
     global virgin, cross, black
-    tipNum, lineLen = len(mostLeft), len(lineLen)
+    tipNum, lineLen = len(mostLeft), len(line)
     for n in range(mostLeft[0][0]):
         line[n] = cross
     for i in range(tipNum - 1):
@@ -132,22 +133,28 @@ def mixLeftRight(line, mostLeft, mostRight):
 
 
 def getMostRightLine(lineLen, tipNums, line):
-    return getMostLeftLine(lineLen, tipNums, line[::-1])[::-1]
+    offReverse = getMostLeftLine(lineLen, tipNums, line[::-1])
+    offRigh = []
+    for n in offReverse:
+        offRigh.append((lineLen - 1 - n[1], lineLen - 1 - n[0]))
+    return offRigh[::-1]
 
 
 def getMostLeftLine(lineLen, tipNums, line):
     global virgin, cross, black
-    pos, num, offLeft, newLine = 0, 0, [(0, 0)] * len(tipNums), [virgin] * lineLen
+    nextpos, num, offLeft, newLine = 0, 0, [(0, 0)] * len(tipNums), [virgin] * lineLen
     while num < len(tipNums):
-        nextpos = findNextBlockStart(lineLen, tipNums[num], line, pos)
+        nextpos = findNextBlockStart(lineLen, tipNums[num], line, nextpos)
         logging.info("--nextpos: %s, for num: %s" % (nextpos, num))
-        newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)
+        newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)        
         blockLen = tipNums[numNew]
-        logging.info("--newNum: %s, newPos: %s" % (numNew, nextpos))
+        logging.info("--newNum: %s, nextpos: %s" % (numNew, nextpos))
         for i in range(nextpos, nextpos + blockLen):  
             newLine[i] = black
-        offLeft[num] = (nextpos, nextpos + blockLen - 1) # add each block's start&end
-        break  # TODO
+        offLeft[numNew] = (nextpos, nextpos + blockLen - 1) # add each block's start&end
+        nextpos += (blockLen + 1)        
+        num = numNew + 1        
+        logging.info("--num: %s, nextpos: %s\n%s\n%s" % (num, nextpos, newLine, offLeft))
     return offLeft
 
 
@@ -156,30 +163,31 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
     check pre suit block need move right or not
     '''
     global virgin, cross, black
-    if num == 0:               # if pre still have black, means wrong table
+    if num == 0:                          # if pre still have black, means wrong table
         return newLine, num, nextpos
-    checkpos, preBlockEnd = nextpos - 1, nextpos - 1
+    checkpos = nextpos - 1
+    while line[checkpos] != black:        # find pre black in line
+        if checkpos == 0:
+            break
+        checkpos -= 1
+    if newLine[checkpos] == black:        # means every block in line covered, so OK  
+        return newLine, num, nextpos
+    preBlockEnd = checkpos - 1
     while newLine[preBlockEnd] != black : # find pre block in newLine, must be there
         preBlockEnd -= 1
-    while checkpos > preBlockEnd:
-        while line[checkpos] != black:    # find pre block in line
-            checkpos -= 1
-        if checkpos == preBlockEnd:       # means every block covered, so OK            
-            return newLine, num, nextpos            
-        else:                  
-            num -= 1
-            preBlockLen, skippos = tipNums[num], checkpos - preBlockLen + 1
-            for pos in range(checkpos - preBlockLen, checkpos):
-                if line[pos] != black:
-                    skippos = pos
-                    break
-                elif line[pos + preBlockLen + 1] == cross: # and will not suit pre cell cross
-                    for i in range(preBlockEnd - preBlockLen + 1, preBlockEnd + 1):                            
-                        newLine[i] = [virgin]              # remove pre block in new line
-                    return checkBefore(tipNums, num - 1, line, newLine, pos + preBlockLen + 1)
-            for i in range(preBlockEnd - preBlockLen + 1, skippos):                            
-                newLine[i] = [virgin]                      # remove (pre block -- skippos)
+   
+    num -= 1
+    preBlockLen, skippos = tipNums[num], checkpos - preBlockLen + 1
+    for i in range(preBlockEnd - preBlockLen + 1, skippos):                            
+        newLine[i] = [virgin]             # remove (pre block -- skippos)
+    for pos in range(checkpos - preBlockLen, checkpos):
+        if line[pos] != black:            
+            skippos = pos + 1
             return checkBefore(tipNums, num, line, newLine, skippos)
+        elif line[pos + preBlockLen + 1] == cross: # and will not suit pre cell cross
+            return checkBefore(tipNums, num - 1, line, newLine, checkpos)
+    else:                                 # need pre more long block
+        return checkBefore(tipNums, num - 1, line, newLine, checkpos)
 
 
 def findNextBlockStart(lineLen, blockLen, line, start):
