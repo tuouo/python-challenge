@@ -34,7 +34,7 @@ input data:
 virgin, cross, black = 0, 1, 2    # means not sure, not, is black for each cell
 '''
 
-import logging; logging.basicConfig(level = logging.INFO)
+import logging; logging.basicConfig(level = logging.INFO) # CRITICAL
 virgin, cross, black = 0, 1, 2    # means not sure, not, is black
 
 def nonogram(numbers):
@@ -58,6 +58,7 @@ def nonogram(numbers):
                 if not HorOK[i]:
                     logging.info("scanLine Horizontal line %s" % i)
                     table[i], HorOK[i] = scanLine(VerLen, Horizontal[i], table[i])
+            printNo2g(table)
             for i in range(VerLen):
                 if not VerOK[i]:
                     line = []     # transfer Vertical to Horizontal for multiplex method scanLine
@@ -67,6 +68,7 @@ def nonogram(numbers):
                     newLine, VerOK[i] = scanLine(HorLen, Vertical[i], line)
                     for n in range(HorLen):
                         table[n][i] = newLine[n]
+            printNo2g(table)
             allOK = reduce(lambda a, b: a and b, HorOK + VerOK)
             count += 1
     except Exception as e:
@@ -139,7 +141,7 @@ def mixLeftRight(line, mostLeft, mostRight):
 
 
 def getMostRightLine(lineLen, tipNums, line):
-    offReverse = getMostLeftLine(lineLen, tipNums, line[::-1])
+    offReverse = getMostLeftLine(lineLen, tipNums[::-1], line[::-1])
     offRigh = []
     for n in offReverse:
         offRigh.append((lineLen - 1 - n[1], lineLen - 1 - n[0]))
@@ -199,17 +201,21 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
 def findNextBlockStart(lineLen, blockLen, line, start):
     global virgin, cross, black
     pos, find = start, False
-    while not find:        
-        newpos = pos
+    while not find:
         while(line[pos] == cross):      # suit block not start with cross
-            pos += 1
+            pos += 1        
+        newpos = pos
         for i in range(1, blockLen):
             if line[pos + i] == cross:  # suit block len short than black
                 newpos += (i + 1)       # check current cell's next
                 break
         if pos == newpos:
-            try: 
-                while line[pos + blockLen] == black or line[pos - 1] == black:          
+            try:
+                if pos == 0:
+                    if blockLen == lineLen or line[pos + blockLen] != black:
+                        return pos
+                    pos += 1  
+                while line[pos + blockLen] == black or line[pos - 1] == black:                    
                     pos += 1                      # black block's next shouldn't be black  
                     while line[pos + blockLen] == black :
                         pos += 1
@@ -220,11 +226,13 @@ def findNextBlockStart(lineLen, blockLen, line, start):
                         else:
                             pos += 1              # continue check next is black
                 find = True
-            except Exception as e:                  # black block can reach end
-                if (pos + blockLen - 1) == lineLen and line[pos - 1] != black:
+            except Exception as e:                # black block can reach end
+                if (pos + blockLen) == lineLen and line[pos - 1] != black:
                     find = True
                 else:
                     raise e
+        else:
+            pos = newpos
     return pos
 
 
@@ -238,6 +246,7 @@ def printNo2g(table):
             else:
                 print("?", end = '')
         print()
+    print()
 
 
 
