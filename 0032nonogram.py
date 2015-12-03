@@ -98,20 +98,26 @@ def checkCross(newLine, tipNums, mostLeft, mostRight):
     '''    
     global virgin, cross, black
     off, blockLen = mostLeft[0][1] + 1, 1 
-    while off < mostRight[-1][1]:
-        if newLine[off] == virgin:
+    while off < mostRight[-1][0]:
+        if newLine[off] != virgin:
+            off += 1
+        else:
             while newLine[off + blockLen] == virgin:
+                if off + blockLen == mostRight[-1][0]:
+                    return newLine
                 blockLen += 1
-            if newLine[off - 1] != cross or newLine[off + blockLen] != cross:
-                off += blockLen
-            else:
+            if newLine[off - 1] == cross and newLine[off + blockLen] == cross:
+                shortThanAllHere = True
                 for i in range(len(tipNums)):
                     if off > mostLeft[i][1]:
-                        if off < mostRight[i][0] and blockLen < tipNums[i]:
-                            for n in range(blockLen):
-                                newLine[off + n] = cross
+                        if off < mostRight[i][0] and blockLen > tipNums[i]:
+                            shortThanAllHere = False
                     else:
                         break
+                if shortThanAllHere:
+                    for n in range(blockLen):
+                        newLine[off + n] = cross
+            off += (blockLen + 1)
     return newLine
 
 
@@ -122,13 +128,13 @@ def mixLeftRight(line, mostLeft, mostRight):
         line[n] = cross
     for i in range(tipNum - 1):
         for n in range(mostRight[i][0], mostLeft[i][1] + 1):
-            line[i] = black
+            line[n] = black
         for n in range(mostRight[i][1] + 1, mostLeft[i + 1][0]):
-            line[i] = cross    
+            line[n] = cross  
     for n in range(mostRight[-1][0], mostLeft[-1][1] + 1):
         line[n] = black
     for n in range(mostRight[-1][1] + 1, lineLen):
-        line[i] = cross    
+        line[n] = cross
     return line    
 
 
@@ -145,16 +151,16 @@ def getMostLeftLine(lineLen, tipNums, line):
     nextpos, num, offLeft, newLine = 0, 0, [(0, 0)] * len(tipNums), [virgin] * lineLen
     while num < len(tipNums):
         nextpos = findNextBlockStart(lineLen, tipNums[num], line, nextpos)
-        logging.info("--nextpos: %s, for num: %s" % (nextpos, num))
+#        logging.info("--nextpos: %s, for num: %s" % (nextpos, num))
         newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)        
         blockLen = tipNums[numNew]
-        logging.info("--newNum: %s, nextpos: %s" % (numNew, nextpos))
+#        logging.info("--newNum: %s, nextpos: %s" % (numNew, nextpos))
         for i in range(nextpos, nextpos + blockLen):  
             newLine[i] = black
         offLeft[numNew] = (nextpos, nextpos + blockLen - 1) # add each block's start&end
         nextpos += (blockLen + 1)        
         num = numNew + 1        
-        logging.info("--num: %s, nextpos: %s\n%s\n%s" % (num, nextpos, newLine, offLeft))
+#        logging.info("--num: %s, nextpos: %s\n%s\n%s" % (num, nextpos, newLine, offLeft))
     return offLeft
 
 
