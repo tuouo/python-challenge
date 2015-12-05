@@ -34,7 +34,7 @@ input data:
 virgin, cross, black = 0, 1, 2    # means not sure, not, is black for each cell
 '''
 
-import logging; logging.basicConfig(level = logging.INFO) # CRITICAL
+import logging; logging.basicConfig(level = logging.INFO, filename = '0032.log', filemode = 'w') # CRITICAL INFO
 virgin, cross, black = 0, 1, 2    # means not sure, not, is black
 
 def nonogram(numbers):
@@ -56,18 +56,22 @@ def nonogram(numbers):
         while not allOK and count < limit:
             for i in range(HorLen):
                 if not HorOK[i]:
-                    logging.info("scanLine Horizontal line %s" % i)
+                    logging.info("scanLine Horizontal line %s: %s\n%s" % (i, Horizontal[i], table[i]))
                     table[i], HorOK[i] = scanLine(VerLen, Horizontal[i], table[i])
+            for i in table:
+                logging.info("%s %s" % (i, table.index(i)))
             printNo2g(table)
             for i in range(VerLen):
                 if not VerOK[i]:
                     line = []     # transfer Vertical to Horizontal for multiplex method scanLine
                     for n in range(HorLen):
                         line.append(table[n][i])
-                    logging.info("scanLine Vertical line %s" % i)
+                    logging.info("scanLine Vertical line %s: %s\n%s" % (i, Vertical[i], line))
                     newLine, VerOK[i] = scanLine(HorLen, Vertical[i], line)
                     for n in range(HorLen):
                         table[n][i] = newLine[n]
+            for i in table:
+                logging.info("%s %s" % (i, table.index(i)))
             printNo2g(table)
             allOK = reduce(lambda a, b: a and b, HorOK + VerOK)
             count += 1
@@ -89,8 +93,8 @@ def scanLine(lineLen, tipNums, line):
     newLine = mixLeftRight(line, offLeft, offRigh)      # get cell suit both left & right
     logging.info("----mix\n%s" % newLine)
     if not lineOK: 
-        logging.info("----checkCross")
         newLine = checkCross(newLine, tipNums, offLeft, offRigh) 
+        logging.info("----checkCross\n%s\n" % newLine)
     return newLine, lineOK
 
 
@@ -99,27 +103,29 @@ def checkCross(newLine, tipNums, mostLeft, mostRight):
     check cross: if virgin block'len less than black block which may appear, must be cross
     '''    
     global virgin, cross, black
-    off, blockLen = mostLeft[0][1] + 1, 1 
+    off, blockLen = mostLeft[0][1] + 1, 1
     while off < mostRight[-1][0]:
         if newLine[off] != virgin:
             off += 1
         else:
             while newLine[off + blockLen] == virgin:
-                if off + blockLen == mostRight[-1][0]:
+                if off + blockLen == mostRight[-1][0]: # == is ok, not need >=
                     return newLine
                 blockLen += 1
             if newLine[off - 1] == cross and newLine[off + blockLen] == cross:
-                shortThanAllHere = True
+                bigThanOneHere = False
                 for i in range(len(tipNums)):
-                    if off > mostLeft[i][1]:
-                        if off < mostRight[i][0] and blockLen > tipNums[i]:
-                            shortThanAllHere = False
+                    if off >= mostLeft[i][0]:
+                        if off <= mostRight[i][1] and blockLen >= tipNums[i]:
+                            bigThanOneHere = True
+                            break
                     else:
                         break
-                if shortThanAllHere:
+                if not bigThanOneHere:
                     for n in range(blockLen):
                         newLine[off + n] = cross
             off += (blockLen + 1)
+            blockLen = 1
     return newLine
 
 
@@ -147,22 +153,36 @@ def getMostRightLine(lineLen, tipNums, line):
         offRigh.append((lineLen - 1 - n[1], lineLen - 1 - n[0]))
     return offRigh[::-1]
 
-
+    
 def getMostLeftLine(lineLen, tipNums, line):
     global virgin, cross, black
-    nextpos, num, offLeft, newLine = 0, 0, [(0, 0)] * len(tipNums), [virgin] * lineLen
-    while num < len(tipNums):
-        nextpos = findNextBlockStart(lineLen, tipNums[num], line, nextpos)
-#        logging.info("--nextpos: %s, for num: %s" % (nextpos, num))
-        newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)        
+    nextpos, num, tipLen, lastBlack = 0, 0, len(tipNums), lineLen - 1
+    offLeft, newLine = [(0, 0)] * len(tipNums), [virgin] * lineLen
+    while line[lastBlack] != black and lastBlack >= 0:
+        lastBlack -= 1
+    while num < tipLen:
+        # logging.info("AAAA: nextpos:%s, num:%s\n%s" % (nextpos, num, newLine))
+        nextpos = findNextBlockStart(lineLen, tipNums[num], line, nextpos)            
+        # logging.info(" %s, %s" % (nextpos, num))
+        newLine, numNew, nextpos = checkBefore(tipNums, num, line, newLine, nextpos)            
+        # logging.info(" %s, %s\n%s" % (nextpos, numNew, newLine))
         blockLen = tipNums[numNew]
-#        logging.info("--newNum: %s, nextpos: %s" % (numNew, nextpos))
         for i in range(nextpos, nextpos + blockLen):  
             newLine[i] = black
+        # logging.info("BBBB: nextpos:%s, num:%s\n%s" % (nextpos, numNew, newLine))
+
+        if numNew == tipLen - 1 and lastBlack > nextpos + blockLen:
+            # logging.info("  num:%s, tipLen%s, lastBlack:%s, nextpos:%s, blockLen:%s" % (num, tipLen, lastBlack, nextpos, blockLen))
+            newLine, numNew, nextpos = checkBefore(tipNums, num + 1, line, newLine, lastBlack + 1)
+            if newLine[nextpos - 1] == black:
+                nextpos += 1
+            blockLen = tipNums[numNew]
+            for i in range(nextpos, nextpos + blockLen):  
+                newLine[i] = black
         offLeft[numNew] = (nextpos, nextpos + blockLen - 1) # add each block's start&end
-        nextpos += (blockLen + 1)        
-        num = numNew + 1        
-#        logging.info("--num: %s, nextpos: %s\n%s\n%s" % (num, nextpos, newLine, offLeft))
+        nextpos += (blockLen + 1)                
+        # logging.info("CCCC: nextpos:%s, num:%s\n%s" % (nextpos, numNew, newLine))
+        num = numNew + 1
     return offLeft
 
 
@@ -176,31 +196,34 @@ def checkBefore(tipNums, num, line, newLine, nextpos):
     checkpos = nextpos - 1
     while line[checkpos] != black:        # find pre black in line
         if checkpos == 0:
-            break
+            return newLine, num, nextpos
         checkpos -= 1
     if newLine[checkpos] == black:        # means every block in line covered, so OK  
         return newLine, num, nextpos
-    preBlockEnd = checkpos - 1
+    preBlockEnd = checkpos - 1    
     while newLine[preBlockEnd] != black : # find pre block in newLine, must be there
         preBlockEnd -= 1
    
-    num -= 1
-    preBlockLen, skippos = tipNums[num], checkpos - preBlockLen + 1
-    for i in range(preBlockEnd - preBlockLen + 1, skippos):                            
-        newLine[i] = [virgin]             # remove (pre block -- skippos)
+    checkNum = num - 1
+    preBlockLen = tipNums[checkNum]
+    skippos = checkpos - preBlockLen + 1
+    # logging.info("####%s, %s, checkpos:%s, preBlockEnd:%s, skippos:%s\n%s" % (checkNum, preBlockLen, checkpos, preBlockEnd, skippos, newLine))
+    for i in range(preBlockEnd - preBlockLen + 1, preBlockEnd + 1):                            
+        newLine[i] = virgin             # remove (pre block)
     for pos in range(checkpos - preBlockLen, checkpos):
         if line[pos] != black:            
             skippos = pos + 1
-            return checkBefore(tipNums, num, line, newLine, skippos)
+            return checkBefore(tipNums, checkNum, line, newLine, skippos)
         elif line[pos + preBlockLen + 1] == cross: # and will not suit pre cell cross
-            return checkBefore(tipNums, num - 1, line, newLine, checkpos)
+            return checkBefore(tipNums, checkNum, line, newLine, checkpos + 1)
     else:                                 # need pre more long block
-        return checkBefore(tipNums, num - 1, line, newLine, checkpos)
+        return checkBefore(tipNums, checkNum, line, newLine, checkpos + 1)
 
 
 def findNextBlockStart(lineLen, blockLen, line, start):
     global virgin, cross, black
     pos, find = start, False
+    # logging.info("start:%s, blockLen:%s" % (start, blockLen))
     while not find:
         while(line[pos] == cross):      # suit block not start with cross
             pos += 1        
@@ -209,6 +232,8 @@ def findNextBlockStart(lineLen, blockLen, line, start):
             if line[pos + i] == cross:  # suit block len short than black
                 newpos += (i + 1)       # check current cell's next
                 break
+
+        # logging.info("pos:%s, newpos:%s" % (pos, newpos))
         if pos == newpos:
             try:
                 if pos == 0:
@@ -245,7 +270,7 @@ def printNo2g(table):
                 print(" ", end = '')
             else:
                 print("?", end = '')
-        print()
+        print('', table.index(line))
     print()
 
 
@@ -254,7 +279,8 @@ def printNo2g(table):
 if __name__ == '__main__':
 
     import re
-    with open("output.rtf", 'r') as r:
+    with open("0032up.rtf", 'r') as r:
+    # with open("output.rtf", 'r') as r:
         data = r.read()
     
     numberStr = data.split('\n')
