@@ -84,6 +84,13 @@ def nonogram(numbers):
 
 
 def scanLine(lineLen, tipNums, line):
+    global cross, black
+    if len(tipNums) == 1:
+        if tipNums[0] == 0:                          
+            return [cross] * lineLen, True
+        elif tipNums[0] == lineLen:
+            return [black] * lineLen, True
+
     logging.info("----MostLeft")
     offLeft = getMostLeftLine(lineLen, tipNums, line)   # all black to left as possible
     logging.info("----MostRight")
@@ -112,6 +119,7 @@ def checkCross(newLine, tipNums, mostLeft, mostRight):
                 if off + blockLen == mostRight[-1][0]: # == is ok, not need >=
                     return newLine
                 blockLen += 1
+                print(off, blockLen, mostRight[-1][0])
             if newLine[off - 1] == cross and newLine[off + blockLen] == cross:
                 bigThanOneHere = False
                 for i in range(len(tipNums)):
@@ -279,7 +287,8 @@ def printNo2g(table):
 if __name__ == '__main__':
 
     import re
-    with open("0032up.rtf", 'r') as r:
+    with open("0032test.rtf", 'r') as r:
+    # with open("0032up.rtf", 'r') as r:
     # with open("output.rtf", 'r') as r:
         data = r.read()
     
