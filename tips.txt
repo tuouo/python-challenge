@@ -211,3 +211,16 @@ it has nothing to do with this level.-->
 	check the different, record it.
 	while, it means True or false, and make it a picture.
 	Arecibo message
+	
+32: when you in Level 32, you won't see 32 on the picture in the middle
+    you need "Fill in the blanks <!-- for warmup.txt -->" such like the picture you see in Level 32
+	
+	the picture git from warmup.txt means "up"
+	http://www.pythonchallenge.com/pc/rock/up.txt
+	This is python, not snake or anything else.
+	http://www.pythonchallenge.com/pc/rock/python.html
+	
+	"Free" as in "Free speech", not as in "free...
+	google it.
+	
+	
