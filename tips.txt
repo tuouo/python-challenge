@@ -223,4 +223,9 @@ it has nothing to do with this level.-->
 	"Free" as in "Free speech", not as in "free...
 	google it.
 	
+33: <img src="beer1.jpg" border="0"/><br><br>
+    getcolors()
 	
+http://www.pythonchallenge.com/pc/rock/gremlins.html
+
+http://www.pythonchallenge.com/pc/rock/gremlins.php
