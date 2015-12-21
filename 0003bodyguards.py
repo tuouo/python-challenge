@@ -14,7 +14,8 @@ with open (os.path.join(os.getcwd(), '0003re.html'), 'r') as html:
     for line in html:
         a = reg.findall(line)
         if a:
-            latters += a[0][4]
+            for l in a:
+                latters += l[4]
             #print(a)
 print(latters)
 
