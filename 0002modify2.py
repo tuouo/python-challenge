@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
+import urllib.request as ur, re
+reg = re.compile(r'<!--[\s\S]+<!--([\s\S]+)-->')
+url = 'http://www.pythonchallenge.com/pc/def/ocr.html'
+data = ur.urlopen(url).read().decode('utf-8')
+a = reg.findall(data)
+# a = reg.findall(data, re.M)
+
 result = {}
 alph = ''
-alph2 = []
-with open (os.path.join(os.getcwd(), '0002ocrModify.html'), 'r') as html:
-    for line in html:
-        for letter in range(len(line)):
-            if line[letter] in result:
-                    result[line[letter]] += 1
-            else:
-                result[line[letter]] = 1
-                alph += line[letter]
-                alph2.append(line[letter])
+for i in a[0]:
+    if i in result:
+        result[i] += 1
+    else:
+        result[i] = 1
+        alph += i
 print(result)
 for i in alph:
     if result[i] == 1:
         print(i, end = '')
-print()
-print(alph)
-print(''.join(alph2))
