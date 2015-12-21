@@ -25,3 +25,18 @@ end = re.findall("\d+", info)
 print(end)
 end = ''.join(map(chr, map(int, end)))
 print(end)
+
+# from PIL import Image
+# import urllib.request as ur, io, re
+# url = "http://www.pythonchallenge.com/pc/def/oxygen.png"
+# im = Image.open(io.BytesIO(ur.urlopen(url).read()))
+# w, h = im.size
+
+# info = [im.getpixel((i, h // 2))[0] for i in range(0, w, 7)]    # 47 -- 95
+# info = ''.join(map(chr, info))
+# print(info)
+
+# end = re.findall("\d+", info)
+# print(end)
+# end = ''.join(map(chr, map(int, end)))
+# print(end)
