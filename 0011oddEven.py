@@ -3,6 +3,15 @@
 '''
 http://www.pythonchallenge.com/pc/return/5808.html
 '''
+# from PIL import Image
+# import urllib.request as ur, io
+# url = "http://www.pythonchallenge.com/pc/return/cave.jpg"
+# mgr = ur.HTTPPasswordMgrWithDefaultRealm()
+# mgr.add_password(None, url, 'huge', 'file')
+# opener = ur.build_opener(ur.HTTPBasicAuthHandler(mgr))
+# data = opener.open(url).read()
+
+# im = Image.open(io.BytesIO(data))
 from PIL import Image
 im = Image.open('0011cave.jpg')
 w, h = im.size
