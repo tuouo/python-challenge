@@ -6,6 +6,16 @@ http://www.pythonchallenge.com/pc/return/italy.html
 http://www.pythonchallenge.com/pc/return/cat.html
 and its name is uzi. you'll hear from him later. 
 '''
+
+# from PIL import Image
+# import urllib.request as ur, io
+# url = "http://www.pythonchallenge.com/pc/return/wire.png"
+# mgr = ur.HTTPPasswordMgrWithDefaultRealm()
+# mgr.add_password(None, url, 'huge', 'file')
+# opener = ur.build_opener(ur.HTTPBasicAuthHandler(mgr))
+# data = opener.open(url).read()
+# source = Image.open(io.BytesIO(data))
+
 from PIL import Image
 source = Image.open("0014wire.png")
 souData = source.load()
