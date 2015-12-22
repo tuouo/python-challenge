@@ -32,7 +32,7 @@ put output data to a good place.
  "it's in the air. look at the letters" 
  riddle:'letters' means what you git.
  
-7: look at what you hava. Analyse it.
+7: look at what you hava. AnalyseO it.
 change number if they below 255 or anything same.
  
 8: BZh9 --> bz2
@@ -55,7 +55,8 @@ group by two, treat as dots coordinate. connect one bye one
   ?*? http://www.pythonchallenge.com/pc/return/bert.html
   delete means delete
   
-13: XML, need to be opened in right way --> xmlrpc
+13: methodResponse --> 
+  XML, need to be opened in right way --> xmlrpc
   system.listMethods() will tell you what method supported.
   print(server.phone("evil")) "He is not the evil"
   Where is the evil. Level 12 does he appear.
