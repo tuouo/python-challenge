@@ -73,6 +73,7 @@ group by two, treat as dots coordinate. connect one bye one
 
 16: let me get this straight
   get what? the color.
+  why 195, cause it appera together and only once
 
 17：to see cookies
   Settings-> Show advanced settings...
