@@ -4,8 +4,15 @@
 http://www.pythonchallenge.com/pc/return/mozart.html
 '''
 from PIL import Image, ImageChops
+import urllib.request as ur, io
+url = "http://www.pythonchallenge.com/pc/return/mozart.gif"
+mgr = ur.HTTPPasswordMgrWithDefaultRealm()
+mgr.add_password(None, url, 'huge', 'file')
+opener = ur.build_opener(ur.HTTPBasicAuthHandler(mgr))
+data = opener.open(url).read()
+im = Image.open(io.BytesIO(data))
 
-im = Image.open('0016mozart.gif')
+# im = Image.open('0016mozart.gif')
 w, h = im.size
 color = {}
 pre, con = im.getpixel((0, 0)), 0
