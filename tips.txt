@@ -105,7 +105,15 @@ group by two, treat as dots coordinate. connect one bye one
   
   http://www.pythonchallenge.com/pc/stuff/violin.php you need "inform him"
   
-18: TODO
+18: <!-- it is more obvious that what you might think -->
+    means brightness
+    http://www.pythonchallenge.com/pc/return/brightness.html
+    get deltas.gz
+    http://www.pythonchallenge.com/pc/return/deltas.gz
+    in which have a text
+    can you tell the difference?
+    check difference with difflib.ndiff
+    "89 50 4e 47 0d" means a 'png'
 
 19: In the email "I have a real work to do and I must know what's inside!"
 	"Maybe my computer is out of order." means do as the map imply.
