@@ -5,8 +5,17 @@ http://www.pythonchallenge.com/pc/hex/copper.html
 <!-- or maybe white.gif would be more bright-->
 '''
 from PIL import Image, ImageSequence, ImageDraw
-im = Image.open("0022white.gif")
+import urllib.request as ur, io
+url = "http://www.pythonchallenge.com/pc/hex/white.gif"
+mgr = ur.HTTPPasswordMgrWithDefaultRealm()
+mgr.add_password(None, url, 'butter', 'fly')
+opener = ur.build_opener(ur.HTTPBasicAuthHandler(mgr))
+data = opener.open(url).read()
+im = Image.open(io.BytesIO(data))
+
+# im = Image.open("0022white.gif")
 #print(im.size)
+
 new = Image.new('RGB', (400, 100), "black")
 ned = ImageDraw.Draw(new)  
 x, y = -40, 20    # -> (20, 20)
