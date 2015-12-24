@@ -129,7 +129,12 @@ ok, invader. you are inside now.
     can not further
     so, from back
 esrever ni emankcin wen ruoy si drowssap eht
-#the passowrd is your new nichname in reverse
+#the passowrd is your new nichname in reverse    redavni
+
+bytes 0-30202/2123456789esrever ni emankcin wen ruoy si drowssap eht
+bytes 2123456744-2123456788/2123456789and it is hiding at 1152983631.
+bytes 2123456712-2123456743/2123456789
+
 and it is hiding at 1152983631.
     find nichname in this level, and it be in this level.(nichname is a name, which is used for others call you)
 
@@ -151,6 +156,7 @@ and it is hiding at 1152983631.
 23: what is this module?
     <!-- 	it can't find it. this is an undocumented module. -->
   a moudle,  undocumented
+  
     <!--
     'va gur snpr bs jung?'
     -->
