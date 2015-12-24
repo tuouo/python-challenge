@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 '''
 http://www.pythonchallenge.com/pc/ring/yankeedoodle.html
+http://www.pythonchallenge.com/pc/ring/yankeedoodle.csv
 '''
 import re, struct
 from PIL import Image
