@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 '''
 http://www.pythonchallenge.com/pc/ring/bell.html
+repeat
+switch
 '''
 from PIL import Image
 im = Image.open("0028bell.png")
