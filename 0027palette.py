@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-http://www.pythonchallenge.com/pc/hex/decent.html
+http://www.pythonchallenge.com/pc/hex/speedboat.html
 
 keyword: different between Python 2.X and Python 3.X
 '''
