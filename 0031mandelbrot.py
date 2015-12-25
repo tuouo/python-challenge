@@ -20,7 +20,7 @@ def mendelbrot(left = 0.34, top = 0.57, width = 0.036, height = 0.027, iteration
 from PIL import Image
 im = Image.open("0031mandelbrot.gif")
 new = im.copy()
-new.putdata(list(mendelbr0t())[:640 * 480])
+new.putdata(list(mendelbrot())[:640 * 480])
 #new.show()
 
 diff = [(b - a) for a, b in zip(im.getdata(), new.getdata()) if a != b]

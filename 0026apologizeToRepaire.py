@@ -46,3 +46,4 @@ with open("mybroken.zip", 'rb') as bro:
             if hashlib.md5(new).hexdigest() == md5OK:
                 with open("0026OK.zip", 'wb') as ok:
                     ok.write(new)
+                break

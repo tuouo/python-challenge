@@ -39,7 +39,7 @@ for k, v in color.items():
             print("together:", k)
             linePoint = k
 
-# magic = 195    # do not ask me how did i know 195 means the color(pink?)
+# magic = 195    
 magic = linePoint    #which color appear together
 for j in range(h):
     box = 0, j, w,  j + 1
@@ -51,5 +51,3 @@ for j in range(h):
     row = ImageChops.offset(row, -i)
     im.paste(row, box)
 im.show()
-
-

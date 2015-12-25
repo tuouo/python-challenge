@@ -5,13 +5,17 @@ http://www.pythonchallenge.com/pc/hex/ambiguity.html
 '''
 from PIL import Image, ImageDraw
 im = Image.open("0024maze.png")
-for i in range(im.size[1]):	
-    #print(im.getpixel((i,0)), '', end = '')
-    #print(im.getpixel((i, im.size[1] - 1)), '', end = '')
+for i in range(im.size[1]):
+    # if im.getpixel((i,0)) != (255, ) * 4:
+    #     print(im.getpixel((i,0)), '', end = '')
+    # if im.getpixel((i, im.size[1] - 1)) != (255, ) * 4:
+    #     print(im.getpixel((i, im.size[1] - 1)), '', end = '')
     if im.getpixel((i,0))[0] == 0:
         pos = (i, 0)
     if im.getpixel((i, im.size[0] - 1))[0] == 0:
         exit = (i, im.size[0] - 1)
+# print()
+# print(pos, exit)
 
 direction = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 wall = (255, 255, 255, 255)
